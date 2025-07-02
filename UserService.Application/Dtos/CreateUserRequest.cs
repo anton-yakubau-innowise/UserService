@@ -2,7 +2,7 @@ namespace UserService.Application.Dtos
 {
     public record CreateUserRequest(
         string Email,
-        string Username,
+        string UserName,
         string FirstName,
         string LastName
     );

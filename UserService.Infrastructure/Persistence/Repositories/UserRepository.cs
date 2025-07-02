@@ -42,9 +42,5 @@ namespace UserService.Infrastructure.Persistence.Repositories
         {
             dbContext.Users.Remove(user);
         }
-        public void Update(User user)
-        {
-            dbContext.Users.Update(user);
-        }
     }
 }
