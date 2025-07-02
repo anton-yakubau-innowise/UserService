@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using UserService.Domain.Common;
 
 namespace UserService.Domain.Entities
 {
@@ -26,8 +27,10 @@ namespace UserService.Domain.Entities
 
         public static User RegisterNewUser(string email, string username, string firstName, string lastName)
         {
-            if (string.IsNullOrWhiteSpace(email)) throw new ArgumentNullException(nameof(email));
-            if (string.IsNullOrWhiteSpace(username)) throw new ArgumentNullException(nameof(username));
+            Guard.AgainstInvalidEmail(email);
+            Guard.AgainstNullOrWhiteSpace(username);
+            Guard.AgainstNullOrWhiteSpace(firstName);
+            Guard.AgainstNullOrWhiteSpace(lastName);
 
             return new User
             {
