@@ -24,7 +24,7 @@ namespace UserService.Domain.Entities
             Email = string.Empty;
         }
 
-        public static User RegisterNew(string email, string username, string firstName, string lastName)
+        public static User RegisterNewUser(string email, string username, string firstName, string lastName)
         {
             if (string.IsNullOrWhiteSpace(email)) throw new ArgumentNullException(nameof(email));
             if (string.IsNullOrWhiteSpace(username)) throw new ArgumentNullException(nameof(username));
@@ -41,7 +41,7 @@ namespace UserService.Domain.Entities
             };
         }
 
-        public void UpdateProfile(string firstName, string lastName)
+        public void UpdateProfile(string? firstName, string? lastName)
         {
             if (!string.IsNullOrWhiteSpace(firstName))
             {

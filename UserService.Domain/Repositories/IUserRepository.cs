@@ -12,6 +12,5 @@ namespace UserService.Domain.Repositories
 
         Task AddAsync(User user, CancellationToken cancellationToken = default);
         void Delete(User user);
-        void Update(User user);
     }
 }
