@@ -42,7 +42,13 @@ namespace UserService.Application.Services
                 request.LastName
             );
 
-            await userManager.CreateAsync(user);
+            var result = await userManager.CreateAsync(user, request.Password);
+
+            if (!result.Succeeded)
+            {
+                throw new Exception("User creation failed");
+            }
+
             return mapper.Map<UserDto>(user);
         }
 
@@ -65,7 +71,12 @@ namespace UserService.Application.Services
             {
                 throw new KeyNotFoundException($"User with ID {id} not found.");
             }
-            await userManager.DeleteAsync(user);
+            
+            var result = await userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {
+                throw new Exception("User deletion failed");
+            }
         }
     }
 }
