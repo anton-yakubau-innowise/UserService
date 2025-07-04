@@ -11,6 +11,8 @@ namespace UserService.Domain.Repositories
         Task<IEnumerable<User>> ListAsync(Expression<Func<User, bool>> predicate, CancellationToken cancellationToken = default);
 
         Task AddAsync(User user, CancellationToken cancellationToken = default);
-        void Delete(User user);
+        Task DeleteAsync(User user, CancellationToken cancellationToken = default);
+        Task UpdateAsync(User user, CancellationToken cancellationToken = default);
+        
     }
 }
