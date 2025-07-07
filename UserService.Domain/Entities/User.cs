@@ -7,7 +7,6 @@ namespace UserService.Domain.Entities
     [CollectionName("Users")]
     public class User : MongoIdentityUser<Guid>
     {
-
         public string FirstName { get; private set; }
 
         public string LastName { get; private set; }
@@ -20,10 +19,6 @@ namespace UserService.Domain.Entities
         {
             FirstName = string.Empty;
             LastName = string.Empty;
-            UserName = string.Empty;
-            Email = string.Empty;
-            CreatedAt = DateTime.UtcNow;
-            UpdatedAt = null;
         }
         public static User RegisterNewUser(string email, string username, string firstName, string lastName)
         {
@@ -44,7 +39,7 @@ namespace UserService.Domain.Entities
             };
         }
 
-        public void UpdateProfile(string? firstName, string? lastName)
+        public void UpdateProfile(string? firstName = null, string? lastName = null)
         {
             if (!string.IsNullOrWhiteSpace(firstName))
             {
