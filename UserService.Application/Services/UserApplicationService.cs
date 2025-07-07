@@ -61,6 +61,18 @@ namespace UserService.Application.Services
             }
 
             user.UpdateProfile(request.FirstName, request.LastName);
+
+
+            // if (!string.IsNullOrWhiteSpace(request.UserName))
+            // {
+            //     var setUserNameResult = await userManager.SetUserNameAsync(user, request.UserName);
+            // }
+
+            // if (!string.IsNullOrWhiteSpace(request.Email))
+            // {
+            //     var setEmailResult = await userManager.SetEmailAsync(user, request.Email);
+            // }
+
             await userManager.UpdateAsync(user);
         }
 

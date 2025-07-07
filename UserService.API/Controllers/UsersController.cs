@@ -1,20 +1,18 @@
 using Microsoft.AspNetCore.Mvc;
 using UserService.Application.Interfaces;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authorization;
-using UserService.Domain.Entities;
 using UserService.Application.Dtos;
-using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace UserService.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UsersController(IUserApplicationService userService) : ControllerBase
     {
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<UserDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<UserDto>), StatusCodes.Status200OK)]   
         public IActionResult GetAllUsers()
         {
             var users = userService.GetAllUsers();

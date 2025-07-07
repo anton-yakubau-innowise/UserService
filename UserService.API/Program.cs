@@ -8,6 +8,13 @@ using UserService.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddApplicationServices();   
+builder.Services.AddInfrastructureServices(builder.Configuration);
+
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -15,8 +22,8 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    var jwtSettings = builder.Configuration.GetSection("Jwt");
-    var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key is not configured");
+    var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+    var jwtKey = jwtSettings["Secret"] ?? throw new InvalidOperationException("JwtSettings:Secret is not configured");
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -29,8 +36,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
@@ -64,11 +69,6 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-
-
-
-builder.Services.AddInfrastructureServices(builder.Configuration);
-builder.Services.AddApplicationServices();   
 
 var app = builder.Build();
 
