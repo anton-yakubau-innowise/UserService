@@ -12,6 +12,7 @@ namespace UserService.Application
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             services.AddScoped<IUserApplicationService, UserApplicationService>();
+            services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenService, TokenService>();
 
             return services;
