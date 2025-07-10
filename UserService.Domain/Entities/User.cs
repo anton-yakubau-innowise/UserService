@@ -39,17 +39,26 @@ namespace UserService.Domain.Entities
             };
         }
 
-        public void UpdateProfile(string? firstName = null, string? lastName = null)
+        public void UpdateProfile(
+            string? firstName = null,
+            string? lastName = null,
+            string? email = null,
+            string? userName = null)
         {
-            if (!string.IsNullOrWhiteSpace(firstName))
+            if (!string.IsNullOrWhiteSpace(email))
             {
-                FirstName = firstName;
+                Guard.AgainstInvalidEmail(email);
+                Email = email;
             }
 
+            if (!string.IsNullOrWhiteSpace(userName))
+                UserName = userName;
+
+            if (!string.IsNullOrWhiteSpace(firstName))
+                FirstName = firstName;
+
             if (!string.IsNullOrWhiteSpace(lastName))
-            {
                 LastName = lastName;
-            }
 
             SetUpdated();
         }

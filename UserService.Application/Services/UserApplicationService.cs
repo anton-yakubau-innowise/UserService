@@ -12,14 +12,21 @@ namespace UserService.Application.Services
         public async Task<UserDto?> GetUserByIdAsync(Guid id)
         {
             var user = await userManager.FindByIdAsync(id.ToString());
+            if (user == null)
+            {
+                throw new KeyNotFoundException($"User with ID {id} not found.");
+            }
             return mapper.Map<UserDto?>(user);
         }
         public async Task<UserDto?> GetUserByEmailAsync(string email)
         {
             var user = await userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                throw new KeyNotFoundException($"User with email {email} not found.");
+            }
             return mapper.Map<UserDto?>(user);
         }
-
 
         public IEnumerable<UserDto> GetAllUsers()
         {
@@ -46,7 +53,7 @@ namespace UserService.Application.Services
 
             if (!result.Succeeded)
             {
-                throw new Exception("User creation failed");
+                throw new ArgumentException("User creation failed");
             }
 
             return mapper.Map<UserDto>(user);
@@ -60,20 +67,14 @@ namespace UserService.Application.Services
                 throw new KeyNotFoundException($"User with ID {id} not found.");
             }
 
-            user.UpdateProfile(request.FirstName, request.LastName);
+            user.UpdateProfile(request.FirstName, request.LastName, request.Email, request.UserName);
 
-
-            // if (!string.IsNullOrWhiteSpace(request.UserName))
-            // {
-            //     var setUserNameResult = await userManager.SetUserNameAsync(user, request.UserName);
-            // }
-
-            // if (!string.IsNullOrWhiteSpace(request.Email))
-            // {
-            //     var setEmailResult = await userManager.SetEmailAsync(user, request.Email);
-            // }
-
-            await userManager.UpdateAsync(user);
+            var result = await userManager.UpdateAsync(user);
+            
+            if (!result.Succeeded)
+            {
+                throw new ArgumentException("User update failed");
+            }
         }
 
         public async Task DeleteUserAsync(Guid id)
@@ -87,7 +88,7 @@ namespace UserService.Application.Services
             var result = await userManager.DeleteAsync(user);
             if (!result.Succeeded)
             {
-                throw new Exception("User deletion failed");
+                throw new ArgumentException("User deletion failed");
             }
         }
     }

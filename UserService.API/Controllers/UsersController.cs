@@ -25,10 +25,6 @@ namespace UserService.API.Controllers
         public async Task<IActionResult> GetUserById(Guid id)
         {
             var user = await userService.GetUserByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
             return Ok(user);
         }
 
@@ -38,10 +34,6 @@ namespace UserService.API.Controllers
         public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
         {
             var user = await userService.CreateUserAsync(request);
-            if (user == null)
-            {
-                return BadRequest("User creation failed");
-            }
             return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
         }
 
