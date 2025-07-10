@@ -1,33 +1,31 @@
-using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+using UserService.Domain.Common;
+using AspNetCore.Identity.MongoDbCore.Models;
+using MongoDbGenericRepository.Attributes;
 
 namespace UserService.Domain.Entities
 {
-    public class User : IdentityUser<Guid>
+    [CollectionName("Users")]
+    public class User : MongoIdentityUser<Guid>
     {
-        [Required]
         public string FirstName { get; private set; }
 
-        [Required]
         public string LastName { get; private set; }
 
-        [Required]
         public DateTime CreatedAt { get; private set; }
 
         public DateTime? UpdatedAt { get; private set; }
-
-        private User()
+    
+        public User() : base()
         {
             FirstName = string.Empty;
             LastName = string.Empty;
-            UserName = string.Empty;
-            Email = string.Empty;
         }
-
         public static User RegisterNewUser(string email, string username, string firstName, string lastName)
         {
-            if (string.IsNullOrWhiteSpace(email)) throw new ArgumentNullException(nameof(email));
-            if (string.IsNullOrWhiteSpace(username)) throw new ArgumentNullException(nameof(username));
+            Guard.AgainstInvalidEmail(email);
+            Guard.AgainstNullOrWhiteSpace(username);
+            Guard.AgainstNullOrWhiteSpace(firstName);
+            Guard.AgainstNullOrWhiteSpace(lastName);
 
             return new User
             {
@@ -41,17 +39,26 @@ namespace UserService.Domain.Entities
             };
         }
 
-        public void UpdateProfile(string? firstName, string? lastName)
+        public void UpdateProfile(
+            string? firstName = null,
+            string? lastName = null,
+            string? email = null,
+            string? userName = null)
         {
-            if (!string.IsNullOrWhiteSpace(firstName))
+            if (!string.IsNullOrWhiteSpace(email))
             {
-                FirstName = firstName;
+                Guard.AgainstInvalidEmail(email);
+                Email = email;
             }
 
+            if (!string.IsNullOrWhiteSpace(userName))
+                UserName = userName;
+
+            if (!string.IsNullOrWhiteSpace(firstName))
+                FirstName = firstName;
+
             if (!string.IsNullOrWhiteSpace(lastName))
-            {
                 LastName = lastName;
-            }
 
             SetUpdated();
         }

@@ -6,9 +6,10 @@ namespace UserService.Application.Interfaces
     {
         Task<UserDto?> GetUserByIdAsync(Guid id);
         Task<UserDto?> GetUserByEmailAsync(string email);
-        Task<IEnumerable<UserDto>> GetAllUsersAsync();
-        Task<UserDto> CreateUserAsync(CreateUserRequest createRequest);
+        IEnumerable<UserDto> GetAllUsers();
+        // Task<IEnumerable<UserDto>> GetAllUsersAsync();
+        Task<UserDto> CreateUserAsync(CreateUserRequest request);
+        Task UpdateUserAsync(Guid id, UpdateUserRequest request);
         Task DeleteUserAsync(Guid id);
-        Task UpdateUserAsync(Guid id, UpdateUserRequest updateRequest);
     }
 }
