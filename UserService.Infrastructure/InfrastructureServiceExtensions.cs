@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using UserService.Domain.Entities;
 using UserService.Domain.Repositories;
+using UserService.Infrastructure.Persistence.Configuration;
 using UserService.Infrastructure.Persistence.Repositories;
 
 namespace UserService.Infrastructure
@@ -13,10 +14,10 @@ namespace UserService.Infrastructure
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration["MongoDbSettings:ConnectionString"];
-            var databaseName = configuration["MongoDbSettings:DatabaseName"];
+            var mongoDbSettings = new MongoDbSettings();
+            configuration.GetSection(MongoDbSettings.SectionName).Bind(mongoDbSettings);
 
-            if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(databaseName))
+            if (string.IsNullOrEmpty(mongoDbSettings.ConnectionString) || string.IsNullOrEmpty(mongoDbSettings.DatabaseName))
             {
                 throw new InvalidOperationException("ConnectionString or DatabaseName for MongoDB are not set in the configuration.");
             }
@@ -29,15 +30,15 @@ namespace UserService.Infrastructure
                     options.Password.RequireUppercase = false;
                     options.Password.RequireLowercase = false;
                 })
-                .AddMongoDbStores<User, MongoIdentityRole<Guid>, Guid>(connectionString, databaseName)
+                .AddMongoDbStores<User, MongoIdentityRole<Guid>, Guid>(mongoDbSettings.ConnectionString, mongoDbSettings.DatabaseName)
                 .AddSignInManager()
                 .AddDefaultTokenProviders();
 
-            services.AddSingleton<IMongoClient>(sp => new MongoClient(connectionString));
+            services.AddSingleton<IMongoClient>(sp => new MongoClient(mongoDbSettings.ConnectionString));
             services.AddScoped(sp =>
             {
                 var client = sp.GetRequiredService<IMongoClient>();
-                return client.GetDatabase(databaseName);
+                return client.GetDatabase(mongoDbSettings.DatabaseName);
             });
 
             services.AddScoped<IUserRepository, MongoUserRepository>();
