@@ -53,7 +53,7 @@ namespace UserService.Application.Services
 
             if (!result.Succeeded)
             {
-                throw new ArgumentException("User creation failed");
+                throw new ArgumentException("User creation failed. " + string.Join(", ", result.Errors.Select(e => e.Description)));
             }
 
             return mapper.Map<UserDto>(user);
@@ -73,7 +73,7 @@ namespace UserService.Application.Services
             
             if (!result.Succeeded)
             {
-                throw new ArgumentException("User update failed");
+                throw new ArgumentException("User update failed. " + string.Join(", ", result.Errors.Select(e => e.Description)));
             }
         }
 
@@ -88,7 +88,7 @@ namespace UserService.Application.Services
             var result = await userManager.DeleteAsync(user);
             if (!result.Succeeded)
             {
-                throw new ArgumentException("User deletion failed");
+                throw new ArgumentException("User deletion failed. " + string.Join(", ", result.Errors.Select(e => e.Description)));
             }
         }
     }

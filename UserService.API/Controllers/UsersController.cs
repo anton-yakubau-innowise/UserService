@@ -40,6 +40,7 @@ namespace UserService.API.Controllers
         [HttpPut("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(IEnumerable<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserRequest request)
         {
             await userService.UpdateUserAsync(id, request);
