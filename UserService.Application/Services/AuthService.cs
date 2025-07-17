@@ -1,9 +1,7 @@
 using UserService.Application.Interfaces;
 using UserService.Application.Dtos;
 using UserService.Domain.Entities;
-using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using MongoDB.Driver.Linq;
 
 namespace UserService.Application.Services
 {
