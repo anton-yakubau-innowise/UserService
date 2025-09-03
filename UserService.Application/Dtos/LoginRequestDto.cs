@@ -1,7 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace UserService.Application.Dtos
 {
     public record LoginRequestDto(
-        string UserName,
-        string Password);
+        [Required] string UserName,
+        [Required] string Password);
 
 }
