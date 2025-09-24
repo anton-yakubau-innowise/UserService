@@ -13,7 +13,7 @@ public class UserGrpcService(IUserRepository userRepository) : UserApi.UserApiBa
             throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid GUID format"));
         }
 
-        var user = await userRepository.GetByIdAsync(userGuid);
+        var user = await userRepository.GetByIdAsync(userGuid, context.CancellationToken);
 
         if (user == null)
         {
