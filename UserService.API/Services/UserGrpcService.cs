@@ -23,8 +23,8 @@ public class UserGrpcService(IUserRepository userRepository) : UserApi.UserApiBa
         return new UserContactInfoResponse
         {
             Id = userGuid.ToString(),
-            Email = user.Email,
-            PhoneNumber = user.PhoneNumber
+            Email = user.Email ?? string.Empty,
+            PhoneNumber = user.PhoneNumber ?? string.Empty
         };
     }
 }

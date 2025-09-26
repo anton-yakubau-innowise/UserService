@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using UserService.API.Middleware;
+using UserService.API.Services;
 using UserService.Application;
 using UserService.Infrastructure;
 
@@ -11,7 +12,7 @@ public class Startup(IConfiguration configuration, IWebHostEnvironment env)
     {
         services.AddControllers();
         services.AddEndpointsApiExplorer();
-
+        services.AddGrpc();
         services.AddApplicationServices();
         services.AddInfrastructureServices(configuration);
 
@@ -91,6 +92,7 @@ public class Startup(IConfiguration configuration, IWebHostEnvironment env)
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
+            endpoints.MapGrpcService<UserGrpcService>();
         });
     }
 }
