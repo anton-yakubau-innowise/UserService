@@ -1,9 +1,6 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using UserService.Application.Dtos;
 using UserService.Application.Interfaces;
-using UserService.Application.Services;
-using UserService.Domain.Entities;
 
 namespace UserService.API.Controllers
 {
