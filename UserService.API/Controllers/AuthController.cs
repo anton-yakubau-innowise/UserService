@@ -20,7 +20,7 @@ namespace UserService.API.Controllers
                 return BadRequest(result.ErrorMessage);
             }
 
-            return Ok(new LoginResponseDto(result.Token!));
+            return Ok(new LoginResponseDto(result.Token!, result.User!));
         }
 
         [HttpPost("login")]
@@ -34,7 +34,7 @@ namespace UserService.API.Controllers
                 return Unauthorized(result.ErrorMessage);
             }
 
-            return Ok(new LoginResponseDto(result.Token!));
+            return Ok(new LoginResponseDto(result.Token!, result.User!));
         }
     }
 }

@@ -8,4 +8,6 @@ public record RegisterRequestDto(
     [Required] string Email,
     [Required] string Password,
     [Required] string FirstName,
-    [Required] string LastName);
+    [Required] string LastName,
+    string? PhoneNumber = null
+);

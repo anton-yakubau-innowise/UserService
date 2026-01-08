@@ -46,7 +46,8 @@ namespace UserService.Application.Services
                 request.Email,
                 request.UserName,
                 request.FirstName,
-                request.LastName
+                request.LastName,
+                request.PhoneNumber
             );
 
             var result = await userManager.CreateAsync(user, request.Password);
@@ -67,7 +68,34 @@ namespace UserService.Application.Services
                 throw new KeyNotFoundException($"User with ID {id} not found.");
             }
 
-            user.UpdateProfile(request.FirstName, request.LastName, request.Email, request.UserName);
+            user.UpdateProfile(request.FirstName, request.LastName);
+
+            if (!string.IsNullOrWhiteSpace(request.Email) && user.Email != request.Email)
+            {
+                var setEmailResult = await userManager.SetEmailAsync(user, request.Email);
+                if (!setEmailResult.Succeeded)
+                {
+                    throw new ApplicationException($"Failed to update email: {string.Join(", ", setEmailResult.Errors.Select(e => e.Description))}");
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(request.UserName) && user.UserName != request.UserName)
+            {
+                var setUserNameResult = await userManager.SetUserNameAsync(user, request.UserName);
+                if (!setUserNameResult.Succeeded)
+                {
+                    throw new ApplicationException($"Failed to update username: {string.Join(", ", setUserNameResult.Errors.Select(e => e.Description))}");
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(request.PhoneNumber) && user.PhoneNumber != request.PhoneNumber)
+            {
+                var setPhoneResult = await userManager.SetPhoneNumberAsync(user, request.PhoneNumber);
+                if (!setPhoneResult.Succeeded)
+                {
+                    throw new ApplicationException($"Failed to update phone number: {string.Join(", ", setPhoneResult.Errors.Select(e => e.Description))}");
+                }
+            }
 
             var result = await userManager.UpdateAsync(user);
             

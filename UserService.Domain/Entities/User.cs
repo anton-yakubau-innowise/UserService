@@ -16,7 +16,7 @@ namespace UserService.Domain.Entities
         {
         }
 
-        private User(string email, string userName, string firstName, string lastName)
+        private User(string email, string userName, string firstName, string lastName, string? phoneNumber = null)
         {
             Id = Guid.NewGuid();
             Email = email;
@@ -25,33 +25,26 @@ namespace UserService.Domain.Entities
             LastName = lastName;
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
-        }
+            if (!string.IsNullOrWhiteSpace(phoneNumber))
+            {
+                PhoneNumber = phoneNumber;
+            }
+        }   
 
-        public static User RegisterNewUser(string email, string username, string firstName, string lastName)
+        public static User RegisterNewUser(string email, string username, string firstName, string lastName, string? phoneNumber = null)
         {
             Guard.AgainstInvalidEmail(email);
             Guard.AgainstNullOrWhiteSpace(username);
             Guard.AgainstNullOrWhiteSpace(firstName);
             Guard.AgainstNullOrWhiteSpace(lastName);
 
-            return new User(email, username, firstName, lastName);
+            return new User(email, username, firstName, lastName, phoneNumber);
         }
 
         public void UpdateProfile(
             string? firstName = null,
-            string? lastName = null,
-            string? email = null,
-            string? userName = null)
+            string? lastName = null)
         {
-            if (!string.IsNullOrWhiteSpace(email))
-            {
-                Guard.AgainstInvalidEmail(email);
-                Email = email;
-            }
-
-            if (!string.IsNullOrWhiteSpace(userName))
-                UserName = userName;
-
             if (!string.IsNullOrWhiteSpace(firstName))
                 FirstName = firstName;
 

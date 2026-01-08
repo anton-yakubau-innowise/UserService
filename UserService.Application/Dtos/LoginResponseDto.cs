@@ -1,3 +1,6 @@
 
 namespace UserService.Application.Dtos;
-public record LoginResponseDto(string Token);
+public record LoginResponseDto(
+    string Token,
+    UserDto User
+);

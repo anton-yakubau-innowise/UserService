@@ -4,6 +4,7 @@ namespace UserService.Application.Dtos
         string? Email = null,
         string? UserName = null,
         string? FirstName = null,
-        string? LastName = null
+        string? LastName = null,
+        string? PhoneNumber = null
     );
 }

@@ -29,6 +29,9 @@ namespace UserService.Infrastructure
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireLowercase = false;
+                    options.User.RequireUniqueEmail = true;
+                    options.User.AllowedUserNameCharacters =
+                        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._";
                 })
                 .AddMongoDbStores<User, MongoIdentityRole<Guid>, Guid>(mongoDbSettings.ConnectionString, mongoDbSettings.DatabaseName)
                 .AddSignInManager()

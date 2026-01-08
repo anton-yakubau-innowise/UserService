@@ -44,7 +44,7 @@ public class Startup(IConfiguration configuration, IWebHostEnvironment env)
                 Title = "UserService API",
                 Version = "v1"
             });
-            
+
             options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
             {
                 Description = "Enter your JWT token without the 'Bearer ' prefix.",
